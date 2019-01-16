@@ -17,9 +17,9 @@ import com.example.library.aspect.JmsHealthCheck;
 import com.example.library.jms.JmsHealthCheckConfiguration;
 
 @Component
-public class HCJmsListener implements JmsHealthCheckConfiguration, MessageListener {
+public class ServiceJmsListener implements JmsHealthCheckConfiguration, MessageListener {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(HCJmsListener.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ServiceJmsListener.class);
 
 	@Autowired
 	private DataBaseProvider databaseProvider;
@@ -27,7 +27,7 @@ public class HCJmsListener implements JmsHealthCheckConfiguration, MessageListen
 	@Override
 	public void onMessage(Message message) {
 		try {
-			((HCJmsListener) AopContext.currentProxy()).handleMessage(message);
+			((ServiceJmsListener) AopContext.currentProxy()).handleMessage(message);
 		} catch (JMSException e) {
 			LOGGER.debug(e.toString());
 		}
