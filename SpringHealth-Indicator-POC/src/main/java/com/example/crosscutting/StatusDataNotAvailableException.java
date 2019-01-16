@@ -6,7 +6,7 @@ public class StatusDataNotAvailableException extends RuntimeException{
 
 	
 	public StatusDataNotAvailableException() {
-		super("Service internal resource(s) are not available");
+		super("Internal service resource(s) are not available");
 		
 	}
 

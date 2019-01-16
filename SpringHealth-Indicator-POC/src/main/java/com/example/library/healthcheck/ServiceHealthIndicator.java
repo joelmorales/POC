@@ -12,23 +12,32 @@ import org.springframework.boot.actuate.health.Health.Builder;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.stereotype.Component;
 
+import com.example.library.jobs.ScheduleJobs;
+import com.example.library.jobs.SchedulerFireJob;
+import com.example.library.jobs.SchedulingValues;
+
 @Component
 public class ServiceHealthIndicator implements HealthIndicator {
-
-	//@Autowired
-	//private DataBaseProvider dataprovider;
 
 	@Autowired
 	private List<ResourceHealthCheck> ResourceHealthCheckList;
 
+	@Autowired
+	private ScheduleJobs scheduleJobs;
+	
+	@Autowired
+	private SchedulerFireJob jobConfiguration;
+	
 	private HashMap<String, String> serviceMap = new HashMap<String, String>();
 
 	private Boolean healthStatus;
-
+	
 	public void setResourceHealthCheckList(ResourceHealthCheck resourceHealthCheck) {
 		ResourceHealthCheckList.add(resourceHealthCheck);
 	}
 
+	
+	
 	@Override
 	public Health health() {
 		healthStatus = true;
@@ -38,6 +47,14 @@ public class ServiceHealthIndicator implements HealthIndicator {
 		return buildHealthDetails();
 	}
 
+	public void startSheduler() {
+		if(jobConfiguration.getJobGroupNames().size()==0) {
+			System.out.println("Schedule Group Names:"+ jobConfiguration.getJobGroupNames());
+			scheduleJobs.schedule(new SchedulingValues(2));
+		}
+	}
+	
+	
 	private void getResourcesHealthStatus() {
 		for (ResourceHealthCheck resource : ResourceHealthCheckList) {
 			serviceMap.put(resource.getResourceName(), buildStringStatus(resource));
@@ -64,25 +81,10 @@ public class ServiceHealthIndicator implements HealthIndicator {
 		return builder.build();
 	}
 
-	private Builder getHealthStatus() {
+	public Builder getHealthStatus() {
 		if (healthStatus)
 			return Health.up();
 		return Health.down();
 	}
-
-	// Another Aspect or Something to manage Exception
-	/*private String getDatabaseHealth() {
-		healthStatus = false;
-		String message = "DataBase is Down";
-		try {
-			if (dataprovider.databasePing() > 0) {
-				healthStatus = true;
-				return message = "DataBase is UP";
-			}
-		} catch (Exception ex) {
-			// System.out.println(ex.getMessage());
-		}
-		return message;
-	}*/
 
 }

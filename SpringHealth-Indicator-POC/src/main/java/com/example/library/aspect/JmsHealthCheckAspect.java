@@ -15,23 +15,18 @@ import com.example.library.crosscutting.HealthCheckExceptionValidator;
 import com.example.library.healthcheck.ServiceHealthIndicator;
 import com.example.library.jms.JMSListenerManager;
 import com.example.library.jms.JmsHealthCheckConfiguration;
-import com.example.library.jobs.ScheduleJobs;
-import com.example.library.jobs.SchedulingValues;
 
 @Component
 @Aspect
-public class AspectForJmsHealthCheck {
+public class JmsHealthCheckAspect {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(AspectForJmsHealthCheck.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(JmsHealthCheckAspect.class);
 
 	@Autowired
 	private ServiceHealthIndicator healthIndicator;
 	
 	@Autowired
 	private JMSListenerManager jmsListenermanager;
-	
-	@Autowired
-	private ScheduleJobs scheduleJobs;
 	
 	@Pointcut("@annotation(JmsHealthCheck)")
 	public void myAnnotation() {
@@ -54,8 +49,8 @@ public class AspectForJmsHealthCheck {
 	private void getHealthCheckStatus(ProceedingJoinPoint joinPoint) {
 		Health health=healthIndicator.health();
 		if(health.getStatus().equals(Status.DOWN)) {
+			healthIndicator.startSheduler();
 			getDownJmsListener(joinPoint);
-			scheduleJobs.schedule(new SchedulingValues(2));
 		}
 	}
 	

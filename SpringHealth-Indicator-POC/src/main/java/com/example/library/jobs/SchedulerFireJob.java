@@ -1,12 +1,15 @@
 package com.example.library.jobs;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import org.quartz.Job;
 import org.quartz.JobBuilder;
 import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
+import org.quartz.JobExecutionContext;
 import org.quartz.SchedulerException;
 import org.quartz.SimpleScheduleBuilder;
 import org.quartz.Trigger;
@@ -33,6 +36,14 @@ public class SchedulerFireJob {
 		schedulerFactory.getObject().scheduleJob(jobDetail, trigger);
 	}
 
+	public List<String> getJobGroupNames() {
+		try {
+			return schedulerFactory.getScheduler().getJobGroupNames();
+		}catch(Exception ex) {
+			return new ArrayList<String>();
+		}
+	}
+	
 	private Trigger getTrigger(Object objectJob) {
 		JobRule jobrule = (JobRule)objectJob;
 		Date triggerStartTime = addSecondsToLocalDate(jobrule.getIntervalInSeconds());

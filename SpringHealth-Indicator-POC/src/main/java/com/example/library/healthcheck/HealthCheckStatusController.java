@@ -16,7 +16,6 @@ import com.example.library.jms.JMSListenerManager;
 import com.example.library.jobs.ScheduleJobs;
 import com.example.library.jobs.SchedulingValues;
 
-
 public class HealthCheckStatusController implements Job {
 
 	@Autowired
@@ -40,7 +39,7 @@ public class HealthCheckStatusController implements Job {
 			LOGGER.info("Controller is starting at: " + LocalTime.now());
 			JobRule jobRule = (JobRule) jobContext.getJobDetail().getJobDataMap().getWrappedMap().get("objectJob");
 			checkHealthStatus(jobRule);
-			
+
 		} catch (Exception ex) {
 			LOGGER.info("Process File controller Job has an Exception: " + ex.toString());
 		}
@@ -49,15 +48,13 @@ public class HealthCheckStatusController implements Job {
 	private void checkHealthStatus(JobRule jobRule) {
 		try {
 			if (getStatus().equals(Status.DOWN)) {
-				//LOGGER.info("Schedule new Job ");
 				scheduleJobs.schedule(new SchedulingValues(jobRule.getIntervalInSeconds()));
 			} else {
 				startJmsListener();
 			}
-
 		} catch (Exception e) {
-			LOGGER.info("Process File controller Job has an Exception when try to schedule "
-					+ "the job: " + e.toString());
+			LOGGER.info(
+					"Process File controller Job has an Exception when try to schedule " + "the job: " + e.toString());
 		}
 	}
 
@@ -68,15 +65,13 @@ public class HealthCheckStatusController implements Job {
 				return Status.DOWN;
 			}
 			return Status.UP;
-		}
-		catch(Exception ex) {
+		} catch (Exception ex) {
 			return Status.DOWN;
 		}
-		
+
 	}
-	
+
 	private void startJmsListener() {
-		// LOGGER.info("Jms Container Value:"+jmsHealthCheck.getJmsListenerContainer());
 		jmsListenermanager.starListener();
 	}
 
