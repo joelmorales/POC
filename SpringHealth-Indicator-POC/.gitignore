@@ -4,6 +4,7 @@
 **/.settings
 **/bin/**
 bin/**
+**/bin/
 .classpath
 .project
 /bin
