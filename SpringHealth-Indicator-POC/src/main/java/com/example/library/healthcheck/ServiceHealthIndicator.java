@@ -49,7 +49,7 @@ public class ServiceHealthIndicator implements HealthIndicator {
 
 	public void startSheduler() {
 		if(jobConfiguration.getJobGroupNames().size()==0) {
-			System.out.println("Schedule Group Names:"+ jobConfiguration.getJobGroupNames());
+			//System.out.println("Schedule Group Names:"+ jobConfiguration.getJobGroupNames());
 			scheduleJobs.schedule(new SchedulingValues(2));
 		}
 	}

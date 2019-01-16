@@ -9,7 +9,6 @@ import org.quartz.Job;
 import org.quartz.JobBuilder;
 import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
-import org.quartz.JobExecutionContext;
 import org.quartz.SchedulerException;
 import org.quartz.SimpleScheduleBuilder;
 import org.quartz.Trigger;
@@ -17,7 +16,6 @@ import org.quartz.TriggerBuilder;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 
 import com.example.library.crosscutting.quartz.JobRule;
-
 
 public class SchedulerFireJob {
 
@@ -39,17 +37,17 @@ public class SchedulerFireJob {
 	public List<String> getJobGroupNames() {
 		try {
 			return schedulerFactory.getScheduler().getJobGroupNames();
-		}catch(Exception ex) {
+		} catch (Exception ex) {
 			return new ArrayList<String>();
 		}
 	}
-	
+
 	private Trigger getTrigger(Object objectJob) {
-		JobRule jobrule = (JobRule)objectJob;
+		JobRule jobrule = (JobRule) objectJob;
 		Date triggerStartTime = addSecondsToLocalDate(jobrule.getIntervalInSeconds());
-		
+
 		System.out.println("New Interval is: " + jobrule.getIntervalInSeconds());
-		
+
 		Trigger trigger = TriggerBuilder.newTrigger().startAt(triggerStartTime)
 				.withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(2))
 				.withDescription("MyTrigger").build();
@@ -57,13 +55,13 @@ public class SchedulerFireJob {
 		return trigger;
 	}
 
-	private Date addSecondsToLocalDate(int seconds){
+	private Date addSecondsToLocalDate(int seconds) {
 		Calendar cal = Calendar.getInstance();
-	    cal.setTime(new Date());
-	    cal.add(Calendar.SECOND, seconds);
-	    return cal.getTime();
+		cal.setTime(new Date());
+		cal.add(Calendar.SECOND, seconds);
+		return cal.getTime();
 	}
-	
+
 	private JobDetail getJobDetail(JobBuilder jobBuilder, Object objectJob) {
 		JobDataMap data = new JobDataMap();
 		data.put("objectJob", objectJob);
