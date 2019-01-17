@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.Health.Builder;
@@ -19,6 +21,8 @@ import com.example.library.jobs.SchedulingValues;
 @Component
 public class ServiceHealthIndicator implements HealthIndicator {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(ServiceHealthIndicator.class);
+	
 	@Autowired
 	private List<ResourceHealthCheck> ResourceHealthCheckList;
 
@@ -49,7 +53,8 @@ public class ServiceHealthIndicator implements HealthIndicator {
 
 	public void startSheduler() {
 		if(jobConfiguration.getJobGroupNames().size()==0) {
-			//System.out.println("Schedule Group Names:"+ jobConfiguration.getJobGroupNames());
+			LOGGER.info("Schedule Group Names i:"+ jobConfiguration.getJobGroupNames());
+			System.out.println("Schedule Group Names:"+ jobConfiguration.getJobGroupNames());
 			scheduleJobs.schedule(new SchedulingValues(2));
 		}
 	}

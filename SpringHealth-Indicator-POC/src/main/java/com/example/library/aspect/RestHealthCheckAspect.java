@@ -21,8 +21,6 @@ import com.example.library.healthcheck.ServiceHealthIndicator;
 
 @Component
 @Scope("prototype")
-//@Aspect("perthis(com.example.aspect.circuitbreaker.CircuitBreakerAspect.circuitBreakerMethods())")
-//"com.example.library.aspect.RestHealthCheckAspect.restHealthCheckMethods()"
 @Aspect("perthis(com.example.library.aspect.RestHealthCheckAspect.restHealthCheckMethods())")
 public class RestHealthCheckAspect {
 
@@ -37,9 +35,6 @@ public class RestHealthCheckAspect {
 	private static int resetTimeout = 30;// seconds
 	private Exception throwable;
 
-	// com.example.library.aspect.RestHealthCheck
-	// @Pointcut("execution(@com.example.aspect.circuitbreaker.CircuitBreaker *
-	// *(..))")
 	@Pointcut("execution(@com.example.library.aspect.RestHealthCheck * *(..))")
 	public void restHealthCheckMethods() {
 	}
@@ -68,11 +63,11 @@ public class RestHealthCheckAspect {
 			LOGGER.info("Retry logic ,half open");
 		} catch (Throwable throwable) {
 			LOGGER.info("Retry logic ,open the circuit");
-			throwable = new StatusDataNotAvailableException();
+			//throwable = new StatusDataNotAvailableException();
 			failureCounter.set(1);
 			lastFailureTime.set(LocalTime.now());
 		}
-		throw this.throwable;
+		throw new StatusDataNotAvailableException();
 	}
 
 	private int getFailureTimeOnSeconds(LocalTime failuretime) {
