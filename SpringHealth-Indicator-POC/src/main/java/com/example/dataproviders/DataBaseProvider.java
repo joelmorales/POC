@@ -44,30 +44,26 @@ public class DataBaseProvider implements ResourceHealthCheck {
 	}
 
 	@Transactional
-	// @DataProviderExceptionAnnotation
+	@DataProviderExceptionAnnotation
 	public List<StatusTable> getStatusList() {
-		try {
-			Iterable<StatusTable> iterableList = statusDAO.findAll();
-			List<StatusTable> statusList = new ArrayList<StatusTable>();
-			for (StatusTable s : iterableList) {
-				statusList.add(s);
-			}
-			return statusList;
-		} catch (Exception ex) {
-			throw new DataProviderException("DataBase is down", ex);
+
+		Iterable<StatusTable> iterableList = statusDAO.findAll();
+		List<StatusTable> statusList = new ArrayList<StatusTable>();
+		for (StatusTable s : iterableList) {
+			statusList.add(s);
 		}
+		return statusList;
+
 	}
 
 	@Transactional
-	// @DataProviderExceptionAnnotation
+	@DataProviderExceptionAnnotation
 	public int saveJDBC(String message) {
-		try {
-			String sql = "insert into status(ID,MESSAGE) values(?,?)";
-			int t = jdbcTemplate.update(sql, new Object[] { getID(), message });
-			return t;
-		} catch (Exception ex) {
-			throw new DataProviderException("DataBase is down", ex);
-		}
+
+		String sql = "insert into status(ID,MESSAGE) values(?,?)";
+		int t = jdbcTemplate.update(sql, new Object[] { getID(), message });
+		return t;
+
 	}
 
 	@Transactional
