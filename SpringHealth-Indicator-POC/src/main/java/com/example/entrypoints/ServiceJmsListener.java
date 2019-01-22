@@ -25,6 +25,7 @@ public class ServiceJmsListener implements JmsHealthCheckConfiguration, MessageL
 	private DataBaseProvider databaseProvider;
 
 	@Override
+	@JmsHealthCheck
 	public void onMessage(Message message) {
 		try {
 			((ServiceJmsListener) AopContext.currentProxy()).handleMessage(message);
