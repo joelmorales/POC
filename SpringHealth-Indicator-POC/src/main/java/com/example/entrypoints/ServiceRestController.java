@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.dataproviders.DataBaseProvider;
 import com.example.dataproviders.database.domain.StatusTable;
-import com.example.library.aspect.JmsHealthCheck;
 import com.example.library.aspect.RestHealthCheck;
 import com.example.library.jobs.SchedulerFireJob;
 
@@ -30,9 +29,8 @@ public class ServiceRestController {
 	}
 
 	@RestHealthCheck
-	public List<StatusTable> getStatusList() {
+	protected List<StatusTable> getStatusList() {
 		return dataBaseProvider.getStatusList();
-
 	}
 
 	@RequestMapping("/status/jobs")

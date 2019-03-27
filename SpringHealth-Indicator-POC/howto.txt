@@ -1,0 +1,36 @@
+http://localhost:8080/springhealthcheck/actuator/health
+http://localhost:8080/springhealthcheck/actuator/info
+http://localhost:8080/springhealthcheck/status/list
+
+
+1. start H2
+	docker pull oscarfonts/h2
+	docker run -d -p 1521:1521 -p 81:81 -v /Users/joelmorales/Public/H2:/opt/h2-data --name=H2Instance oscarfonts/h2
+	Docker start H2Instance2
+	
+2. start activemq
+	Docker pull rmohr/activemq:latest
+	docker run -p 61616:61616 -p 8161:8161 rmohr/activemq
+	
+3. go to queue and push one message
+
+4. They have 2 Database
+	http://localhost:81/login.do?jsessionid=fd469001fa01471f091d17f3d82466e2
+	jdbc:h2:tcp://localhost:1521/test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+	
+	http://localhost:8082/login.do?jsessionid=1039afe76fd78ef664965be8929f5849
+	jdbc:h2:tcp://localhost:9092/mem:acods;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+	
+5.  Shutdown the database and send and message on docker
+	Docker stop H2Instance2
+	
+6. showdown activemq
+	Docker stop 5b1b587379e4
+	
+
+	
+
+	
+
+	
+	
