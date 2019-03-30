@@ -1,11 +1,6 @@
-package com.example.library.jobs;
+package com.example.library.healthcheck;
 
-import java.io.Serializable;
-
-import com.example.library.crosscutting.quartz.JobRule;
-import com.example.library.crosscutting.quartz.JobStatusType;
-
-public class SchedulingValues implements JobRule, Serializable {
+public class SchedulingValues  {
 
 	private static final long serialVersionUID = 1L;
 
@@ -22,15 +17,12 @@ public class SchedulingValues implements JobRule, Serializable {
 		}
 	}
 
-	@Override
+	
 	public int getIntervalInSeconds() {
 		return intervalInSeconds;
 	}
 
-	@Override
-	public JobStatusType getType() {
-		return new ScheduleHealthCheckStatus();
-	}
+	
 
 
 }

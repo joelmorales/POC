@@ -45,7 +45,7 @@ public class H2QuartzDataSourceConfiguration {
 	@Value("classpath:sql/quartz_db.sql")
 	private Resource script;
 
-	@Primary
+	//@Primary
 	@Bean(name="h2entityManagerFactory")
 	@DependsOn("h2Server")
 	public LocalContainerEntityManagerFactoryBean entityManagerFactoryLocal(@Qualifier("integrationLayerDataSource") DataSource datasource) {
@@ -60,7 +60,7 @@ public class H2QuartzDataSourceConfiguration {
 		return entityManager;
 	}
 
-	@Primary
+	//@Primary
 	@Bean(name="integrationLayerDataSource")
 	public DataSource integrationLayerDataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();

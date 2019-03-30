@@ -32,7 +32,7 @@ public class DataBaseProvider implements ResourceHealthCheck {
 	}
 
 	@Transactional
-	// @DataProviderExceptionAnnotation
+	//@DataProviderExceptionAnnotation
 	public int databasePing() {
 		try {
 			String sql = "select 1";

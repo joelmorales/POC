@@ -39,7 +39,7 @@ dependencies {
 	implementation('org.springframework.boot:spring-boot-starter-activemq')
 	compile("com.h2database:h2:${h2databaseVersion}")
 	
-	compile group: 'org.quartz-scheduler', name: 'quartz', version: '2.3.0'
+	//compile group: 'org.quartz-scheduler', name: 'quartz', version: '2.3.0'
 	compile "org.springframework:spring-context-support:${springVersion}"
 	
 	testImplementation('org.springframework.boot:spring-boot-starter-test')

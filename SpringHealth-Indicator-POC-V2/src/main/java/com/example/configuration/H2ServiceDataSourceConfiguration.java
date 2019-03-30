@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 //@Profile("LOCAL")
 public class H2ServiceDataSourceConfiguration {
 
-	//@Primary
+	@Primary
 	@Bean(name = "h2ServiceEntityManagerFactory")
 	public LocalContainerEntityManagerFactoryBean entityManagerFactoryService( ) {
 		LocalContainerEntityManagerFactoryBean entityManager = new LocalContainerEntityManagerFactoryBean();
@@ -40,7 +40,7 @@ public class H2ServiceDataSourceConfiguration {
 		return entityManager;
 	}
 
-	//@Primary
+	@Primary
 	@Bean(name = "h2ServiceDataSource")
 	public DataSource h2ServiceDataSource() {
 		DriverManagerDataSource dataSource = new DriverManagerDataSource();

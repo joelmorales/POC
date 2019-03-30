@@ -17,7 +17,7 @@ public class JMSListenerManager {
 	@Autowired
 	private ApplicationContext context;
 	
-	private String JMS_LISTENER_CONTAINER;
+	private String JMS_LISTENER_CONTAINER ;  //="jmsContainer";
 	
 	private Supplier <DefaultMessageListenerContainer> getListenerContainer =
 			() -> (DefaultMessageListenerContainer) context.getBean(JMS_LISTENER_CONTAINER);
