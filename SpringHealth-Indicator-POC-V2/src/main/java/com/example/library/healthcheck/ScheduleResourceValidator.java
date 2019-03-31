@@ -20,7 +20,7 @@ import com.example.library.jms.JMSListenerManager;
 @Component
 public class ScheduleResourceValidator {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(ScheduleHealthCheckStatus.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(ScheduleResourceValidator.class);
 	
 	@Autowired
 	private ServiceHealthIndicator healthIndicator;
@@ -34,10 +34,10 @@ public class ScheduleResourceValidator {
 	public void execute(int intervalInSeconds) {
 		this.intervalInSeconds = intervalInSeconds;
 		try {
-			LOGGER.info("New Controller is starting at: " + LocalTime.now());
+			LOGGER.info("Schedule starting at: " + LocalTime.now());
 			run();
 		} catch (InterruptedException | ExecutionException e) {
-			e.printStackTrace();
+			LOGGER.info(e.getMessage());
 		}
 	}
 	
@@ -49,17 +49,16 @@ public class ScheduleResourceValidator {
 			return getStatus();
 		};
 		
-		System.out.println("Interval is:"+intervalInSeconds);
+		LOGGER.info("Interval is:"+intervalInSeconds);
 		
 		ScheduledFuture<Status> schedule = ses.schedule(task, intervalInSeconds, TimeUnit.SECONDS);
-		intervalInSeconds = new SchedulingValues(intervalInSeconds).getIntervalInSeconds();
+		intervalInSeconds = new CalculateIntervals(intervalInSeconds).getIntervalInSeconds();
 		
 		if(schedule.get().equals(Status.DOWN)){
 			ses.shutdown();
 			execute(intervalInSeconds);
 		}else {
 			ses.shutdown();
-			//healthIndicator.stopSchedule();
 			startJmsListener();
 		}
 	}

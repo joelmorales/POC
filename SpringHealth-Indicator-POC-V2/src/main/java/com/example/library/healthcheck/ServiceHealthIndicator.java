@@ -5,7 +5,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Timer;
 import java.util.stream.Stream;
 
 import org.slf4j.Logger;
@@ -14,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.Health.Builder;
 import org.springframework.boot.actuate.health.HealthIndicator;
-import org.springframework.boot.actuate.health.Status;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -42,7 +40,7 @@ public class ServiceHealthIndicator implements HealthIndicator {
 	@Override
 	public Health health() {
 		healthStatus = true;
-		System.out.println("Health System Check");
+		LOGGER.info("Health System Check");
 		getResourcesHealthStatus();
 		return buildHealthDetails();
 	}
@@ -55,18 +53,12 @@ public class ServiceHealthIndicator implements HealthIndicator {
 			scheduleRunning = false;
 			LOGGER.info("Schedule Ending:");
 		}
-		
 	}
-
-	/*public void stopSchedule() {
-		scheduleRunning = false;
-	}*/
 
 	public Boolean getScheduleStatus() {
 		return scheduleRunning;
 	}
 	
-
 	private void getResourcesHealthStatus() {
 		for (ResourceHealthCheck resource : ResourceHealthCheckList) {
 			serviceMap.put(resource.getResourceName(), buildStringStatus(resource));
@@ -83,13 +75,11 @@ public class ServiceHealthIndicator implements HealthIndicator {
 
 	private Health buildHealthDetails() {
 		Stream<HashMap<String, String>> st = Stream.of(serviceMap);
-		// st.
-
 		Builder builder = getHealthStatus();
 		Iterator<Entry<String, String>> it = serviceMap.entrySet().iterator();
 		while (it.hasNext()) {
 			Map.Entry pair = (Map.Entry) it.next();
-			System.out.println(pair.getKey() + " = " + pair.getValue());
+			LOGGER.info(pair.getKey() + ""+ pair.getValue());
 			it.remove();
 			builder.withDetail(pair.getKey().toString(), pair.getValue());
 		}
@@ -101,7 +91,5 @@ public class ServiceHealthIndicator implements HealthIndicator {
 			return Health.up();
 		return Health.down();
 	}
-
-	
 
 }

@@ -38,8 +38,8 @@ public class ServiceJmsListener implements JmsHealthCheckConfiguration, MessageL
 		TextMessage txtMsg = (TextMessage) message;
 		System.out.println("received: " + txtMsg.getText());
 
-		//String id = databaseProvider.save(txtMsg.getText());
-		int id = databaseProvider.saveJDBC(txtMsg.getText());
+		String id = databaseProvider.save(txtMsg.getText());
+		//int id = databaseProvider.saveJDBC(txtMsg.getText());
 		
 		System.out.println("message id: " + id);
 		message.acknowledge();

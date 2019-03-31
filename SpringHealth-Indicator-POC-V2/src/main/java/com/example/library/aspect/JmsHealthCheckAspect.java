@@ -41,7 +41,7 @@ public class JmsHealthCheckAspect {
 			if (ex instanceof HealthCheckExceptionValidator) {
 				getHealthCheckStatus(joinPoint);
 			} else {
-				LOGGER.info("Error on " + ex.getMessage());
+				LOGGER.info("Exception "+ex.getClass().getCanonicalName() +" - " + ex.getMessage());
 			}
 		}
 	}
@@ -49,7 +49,6 @@ public class JmsHealthCheckAspect {
 	private void getHealthCheckStatus(ProceedingJoinPoint joinPoint) {
 		Health health = healthIndicator.health();
 		if (health.getStatus().equals(Status.DOWN)) {
-			
 			getDownJmsListener(joinPoint);
 			healthIndicator.startSheduler();
 		}

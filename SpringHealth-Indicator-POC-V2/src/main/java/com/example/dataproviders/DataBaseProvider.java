@@ -31,19 +31,19 @@ public class DataBaseProvider implements ResourceHealthCheck {
 		this.statusDAO = statusDAO;
 	}
 
-	@Transactional
-	//@DataProviderExceptionAnnotation
+	//@Transactional
+	@DataProviderExceptionAnnotation
 	public int databasePing() {
-		try {
+		//try {
 			String sql = "select 1";
 			int count = jdbcTemplate.queryForObject(sql, Integer.class);
 			return count;
-		} catch (Exception ex) {
-			throw new DataProviderException("DataBase is down", ex);
-		}
+		//} catch (Exception ex) {
+		//	throw new DataProviderException("DataBase is down", ex);
+		//}
 	}
 
-	@Transactional
+	//@Transactional
 	@DataProviderExceptionAnnotation
 	public List<StatusTable> getStatusList() {
 
@@ -56,7 +56,7 @@ public class DataBaseProvider implements ResourceHealthCheck {
 
 	}
 
-	@Transactional
+	//@Transactional
 	@DataProviderExceptionAnnotation
 	public int saveJDBC(String message) {
 
@@ -66,14 +66,14 @@ public class DataBaseProvider implements ResourceHealthCheck {
 
 	}
 
-	@Transactional
-	// @DataProviderExceptionAnnotation
+	//@Transactional
+	@DataProviderExceptionAnnotation
 	public String save(String message) {
-		try {
+		//try {
 			return statusDAO.save(new StatusTable(getID(), message)).getId();
-		} catch (Exception ex) {
-			throw new DataProviderException("DataBase is down", ex);
-		}
+		//} catch (Exception ex) {
+		//	throw new DataProviderException("DataBase is down", ex);
+		//}
 	}
 
 	private String getID() {
@@ -86,7 +86,7 @@ public class DataBaseProvider implements ResourceHealthCheck {
 	}
 
 	@Override
-	@Transactional
+	//@Transactional
 	public boolean isHealthly() {
 		try {
 			String sql = "select 1";
