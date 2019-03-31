@@ -5,11 +5,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.stream.Stream;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.Health.Builder;
 import org.springframework.boot.actuate.health.HealthIndicator;
@@ -26,6 +26,9 @@ public class ServiceHealthIndicator implements HealthIndicator {
 	@Autowired
 	private List<ResourceHealthCheck> ResourceHealthCheckList;
 
+	@Value("${health.check.interval.start}")
+	private int intervalStart;
+	
 	private HashMap<String, String> serviceMap = new HashMap<String, String>();
 
 	private Boolean healthStatus;
@@ -49,7 +52,7 @@ public class ServiceHealthIndicator implements HealthIndicator {
 		LOGGER.info("Schedule Running:"+scheduleRunning);
 		if (!scheduleRunning) {
 			scheduleRunning = true;
-			scheduleResource.execute(2);
+			scheduleResource.execute(intervalStart);
 			scheduleRunning = false;
 			LOGGER.info("Schedule Ending:");
 		}
@@ -73,8 +76,8 @@ public class ServiceHealthIndicator implements HealthIndicator {
 		return " is Down";
 	}
 
+	@SuppressWarnings("rawtypes")
 	private Health buildHealthDetails() {
-		Stream<HashMap<String, String>> st = Stream.of(serviceMap);
 		Builder builder = getHealthStatus();
 		Iterator<Entry<String, String>> it = serviceMap.entrySet().iterator();
 		while (it.hasNext()) {

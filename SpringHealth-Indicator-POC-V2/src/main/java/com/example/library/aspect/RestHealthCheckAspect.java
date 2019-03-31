@@ -33,7 +33,7 @@ public class RestHealthCheckAspect {
 	private AtomicReference<LocalTime> lastFailureTime = new AtomicReference<LocalTime>();
 	// private static int failureThreshold = 10;
 	private static int resetTimeout = 30;// seconds
-	private Exception throwable;
+	//private Exception throwable;
 
 	@Pointcut("execution(@com.example.library.aspect.RestHealthCheck * *(..))")
 	public void restHealthCheckMethods() {

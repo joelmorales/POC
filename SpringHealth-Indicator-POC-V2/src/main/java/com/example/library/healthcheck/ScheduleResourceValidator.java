@@ -28,6 +28,9 @@ public class ScheduleResourceValidator {
 	@Autowired
 	private JMSListenerManager jmsListenermanager;
 	
+	@Autowired
+	private CalculateIntervals calculateIntervals;
+	
 	private int intervalInSeconds;
 	
 	
@@ -52,7 +55,7 @@ public class ScheduleResourceValidator {
 		LOGGER.info("Interval is:"+intervalInSeconds);
 		
 		ScheduledFuture<Status> schedule = ses.schedule(task, intervalInSeconds, TimeUnit.SECONDS);
-		intervalInSeconds = new CalculateIntervals(intervalInSeconds).getIntervalInSeconds();
+		intervalInSeconds = calculateIntervals.getNewInterval(intervalInSeconds);
 		
 		if(schedule.get().equals(Status.DOWN)){
 			ses.shutdown();
