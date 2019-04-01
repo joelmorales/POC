@@ -11,13 +11,12 @@ import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.example.configuration.JmsConfiguration;
 import com.example.dataproviders.DataBaseProvider;
 import com.example.library.aspect.JmsHealthCheck;
 import com.example.library.jms.JmsHealthCheckConfiguration;
 
 @Component
-public class ServiceJmsListener implements JmsHealthCheckConfiguration, MessageListener {
+public class ServiceJmsListener implements MessageListener , JmsHealthCheckConfiguration {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ServiceJmsListener.class);
 
@@ -39,15 +38,10 @@ public class ServiceJmsListener implements JmsHealthCheckConfiguration, MessageL
 		System.out.println("received: " + txtMsg.getText());
 
 		String id = databaseProvider.save(txtMsg.getText());
-		//int id = databaseProvider.saveJDBC(txtMsg.getText());
 		
 		System.out.println("message id: " + id);
 		message.acknowledge();
 	}
 
-	@Override
-	public String getJmsListenerContainer() {
-		return JmsConfiguration.JMS_LISTENER_CONTAINER;
-	}
 	
 }

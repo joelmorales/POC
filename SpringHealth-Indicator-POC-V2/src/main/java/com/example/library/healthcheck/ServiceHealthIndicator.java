@@ -43,6 +43,7 @@ public class ServiceHealthIndicator implements HealthIndicator {
 	@Override
 	public Health health() {
 		healthStatus = true;
+		LOGGER.info("\n");
 		LOGGER.info("Health System Check");
 		getResourcesHealthStatus();
 		return buildHealthDetails();
@@ -58,16 +59,18 @@ public class ServiceHealthIndicator implements HealthIndicator {
 		}
 	}
 
-	public Boolean getScheduleStatus() {
-		return scheduleRunning;
-	}
+	
 	
 	private void getResourcesHealthStatus() {
 		for (ResourceHealthCheck resource : ResourceHealthCheckList) {
+			//Remove for TBS
 			serviceMap.put(resource.getResourceName(), buildStringStatus(resource));
+			//Apply logic for get the status and return false
 		}
+		//return healthy here
 	}
 
+	//Remove for TBS
 	private String buildStringStatus(ResourceHealthCheck resource) {
 		if (resource.isHealthly()) {
 			return " is UP";
@@ -76,6 +79,7 @@ public class ServiceHealthIndicator implements HealthIndicator {
 		return " is Down";
 	}
 
+	//Remove for TBS
 	@SuppressWarnings("rawtypes")
 	private Health buildHealthDetails() {
 		Builder builder = getHealthStatus();

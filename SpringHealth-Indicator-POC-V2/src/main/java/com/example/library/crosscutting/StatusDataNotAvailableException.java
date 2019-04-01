@@ -1,4 +1,4 @@
-package com.example.crosscutting;
+package com.example.library.crosscutting;
 
 public class StatusDataNotAvailableException extends RuntimeException{
 

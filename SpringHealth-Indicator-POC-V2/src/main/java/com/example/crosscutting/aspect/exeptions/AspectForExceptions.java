@@ -38,7 +38,7 @@ public class AspectForExceptions {
 			LOGGER.info("SERVICE_LOGGER-" + methodName + " , ", ex.getMessage());
 			throw new DataProviderException("DataBase is down", ex);
 		}
-
 	}
 
+	
 }

@@ -1,4 +1,4 @@
-package com.example.crosscutting;
+package com.example.library.crosscutting;
 
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

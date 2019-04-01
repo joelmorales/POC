@@ -1,6 +1,6 @@
-http://localhost:8080/springhealthcheck/actuator/health
-http://localhost:8080/springhealthcheck/actuator/info
-http://localhost:8080/springhealthcheck/status/list
+http://localhost:8080/springhealthcheckv2/actuator/health
+http://localhost:8080/springhealthcheckv2/actuator/info
+http://localhost:8080/springhealthcheckv2/status/list
 
 
 1. start H2

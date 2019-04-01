@@ -16,7 +16,7 @@ import org.springframework.boot.actuate.health.Status;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.example.crosscutting.StatusDataNotAvailableException;
+import com.example.library.crosscutting.StatusDataNotAvailableException;
 import com.example.library.healthcheck.ServiceHealthIndicator;
 
 @Component

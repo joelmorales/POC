@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 import com.example.library.crosscutting.HealthCheckExceptionValidator;
 import com.example.library.healthcheck.ServiceHealthIndicator;
 import com.example.library.jms.JMSListenerManager;
-import com.example.library.jms.JmsHealthCheckConfiguration;
+
 
 @Component
 @Aspect
@@ -55,8 +55,7 @@ public class JmsHealthCheckAspect {
 	}
 
 	private void getDownJmsListener(ProceedingJoinPoint joinPoint) {
-		JmsHealthCheckConfiguration jmsHealthCheck = (JmsHealthCheckConfiguration) joinPoint.getTarget();
-		jmsListenermanager.stopListener(jmsHealthCheck.getJmsListenerContainer());
+		jmsListenermanager.stopListener();
 	}
 
 }

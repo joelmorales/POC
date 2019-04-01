@@ -30,10 +30,5 @@ public class ServiceRestController {
 		return dataBaseProvider.getStatusList();
 	}
 
-	/*@RequestMapping("/status/jobs")
-	@ResponseBody
-	public List<String> getScheduleJobs() throws Exception {
-		return jobConfiguration.getJobGroupNames();
-	}*/
 
 }

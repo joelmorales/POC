@@ -38,13 +38,13 @@ public class ScheduleResourceValidator {
 		this.intervalInSeconds = intervalInSeconds;
 		try {
 			LOGGER.info("Schedule starting at: " + LocalTime.now());
-			run();
+			getHealthCheckStatus();
 		} catch (InterruptedException | ExecutionException e) {
 			LOGGER.info(e.getMessage());
 		}
 	}
 	
-	public void run() throws InterruptedException, ExecutionException {
+	private void getHealthCheckStatus() throws InterruptedException, ExecutionException {
 		
 		ScheduledExecutorService ses = Executors.newSingleThreadScheduledExecutor();
 		

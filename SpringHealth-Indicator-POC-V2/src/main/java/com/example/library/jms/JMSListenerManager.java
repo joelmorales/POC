@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
 import org.springframework.jms.listener.DefaultMessageListenerContainer;
 import org.springframework.stereotype.Component;
@@ -17,13 +18,15 @@ public class JMSListenerManager {
 	@Autowired
 	private ApplicationContext context;
 	
-	private String JMS_LISTENER_CONTAINER ;  //="jmsContainer";
+	@Value("${health.check.jms.listener.container.names}")
+	private String JMS_LISTENER_CONTAINER ;  
 	
 	private Supplier <DefaultMessageListenerContainer> getListenerContainer =
 			() -> (DefaultMessageListenerContainer) context.getBean(JMS_LISTENER_CONTAINER);
 
-	public void stopListener(String container) {
-		setJmsValue(container);
+			
+	public void stopListener() {
+		//setJmsValue(container);
 		if(getListenerContainer.get().isRunning()) {
 			LOGGER.info("Shutting down listener....");
 			getListenerContainer.get().stop();
@@ -39,10 +42,10 @@ public class JMSListenerManager {
 		}
 	}
 	
-	private void setJmsValue(String value) {
+	/*private void setJmsValue(String value) {
 		if(JMS_LISTENER_CONTAINER == null || JMS_LISTENER_CONTAINER.isEmpty()) {
 			JMS_LISTENER_CONTAINER=value;
 		}
-	}
+	}*/
 	
 }
