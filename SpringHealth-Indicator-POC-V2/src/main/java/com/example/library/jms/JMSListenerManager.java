@@ -1,7 +1,6 @@
 package com.example.library.jms;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -24,9 +23,9 @@ public class JMSListenerManager {
 	@Value("${health.check.jms.listener.container.names}")
 	private String JMS_LISTENER_CONTAINER;
 
-	private Supplier<DefaultMessageListenerContainer> getListenerContainer = () -> (DefaultMessageListenerContainer) context
+	/*private Supplier<DefaultMessageListenerContainer> getListenerContainer = () -> (DefaultMessageListenerContainer) context
 			.getBean(JMS_LISTENER_CONTAINER);
-
+*/
 	private Supplier<List<DefaultMessageListenerContainer>> getListenerContainers = () -> getJMSListenerContainers();
 
 	private List<DefaultMessageListenerContainer> getJMSListenerContainers() {
@@ -50,7 +49,7 @@ public class JMSListenerManager {
 			if(getListener.isRunning()) {
 				LOGGER.info("Shutting down listener...."+getListener.getDestinationName());
 				getListener.stop();
-				getListener.initialize();
+				//getListener.initialize();
 				
 			}
 		}
@@ -68,7 +67,7 @@ public class JMSListenerManager {
 				LOGGER.info("Starting up listener...."+getListener.getDestinationName());
 				///getListener.initialize();
 				getListener.start();
-				
+				//getListener.initialize();
 			}
 		}
 		

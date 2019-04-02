@@ -1,8 +1,9 @@
 package com.example.crosscutting;
 
-import com.example.library.crosscutting.HealthCheckExceptionValidator;
+import com.example.library.crosscutting.HealthCheckException;
 
-public class DataProviderException extends ApplicationException implements HealthCheckExceptionValidator {
+@HealthCheckException
+public class DataProviderException extends ApplicationException  {
 
 	public DataProviderException(String message) {
 		super(message);

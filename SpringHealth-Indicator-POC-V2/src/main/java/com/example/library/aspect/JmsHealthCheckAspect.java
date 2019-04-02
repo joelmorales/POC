@@ -1,5 +1,7 @@
 package com.example.library.aspect;
 
+import java.lang.annotation.Annotation;
+
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -11,7 +13,7 @@ import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.stereotype.Component;
 
-import com.example.library.crosscutting.HealthCheckExceptionValidator;
+import com.example.library.crosscutting.HealthCheckException;
 import com.example.library.healthcheck.ServiceHealthIndicator;
 import com.example.library.jms.JMSListenerManager;
 
@@ -38,23 +40,34 @@ public class JmsHealthCheckAspect {
 		try {
 			joinPoint.proceed();
 		} catch (Exception ex) {
-			if (ex instanceof HealthCheckExceptionValidator) {
+			
+			if( getAnnotation(ex) instanceof HealthCheckException) {
+				getHealthCheckStatus();
+			}
+			/*if (ex instanceof HealthCheckExceptionValidator) {
 				getHealthCheckStatus(joinPoint);
-			} else {
+			} */
+			else {
 				LOGGER.info("Exception "+ex.getClass().getCanonicalName() +" - " + ex.getMessage());
 			}
 		}
 	}
 
-	private void getHealthCheckStatus(ProceedingJoinPoint joinPoint) {
+	private Annotation getAnnotation(Exception ex) {
+		Class<? extends Exception> aclass = ex.getClass();
+		Annotation annotation = aclass.getAnnotation(HealthCheckException.class);
+		return annotation;
+	}
+	
+	private void getHealthCheckStatus() {
 		Health health = healthIndicator.health();
 		if (health.getStatus().equals(Status.DOWN)) {
-			getDownJmsListener(joinPoint);
+			getDownJmsListener();
 			healthIndicator.startSheduler();
 		}
 	}
 
-	private void getDownJmsListener(ProceedingJoinPoint joinPoint) {
+	private void getDownJmsListener() {
 		jmsListenermanager.stopListener();
 	}
 
