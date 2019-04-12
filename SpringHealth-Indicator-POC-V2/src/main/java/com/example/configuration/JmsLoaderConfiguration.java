@@ -10,20 +10,20 @@ import org.springframework.jms.config.DefaultJmsListenerContainerFactory;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.listener.DefaultMessageListenerContainer;
 
-import com.example.entrypoints.ServiceJmsListener;
+import com.example.entrypoints.ServiceJmsLoaderListener;
 
 @Configuration
-public class JmsConfiguration {
+public class JmsLoaderConfiguration {
 
 	private static final Integer INDIVIDUAL_ACNOWLEDGE = 4;
 	private final String BROKER_URL = "tcp://localhost:61616"; 
 	private final String BROKER_USERNAME = "admin"; 
 	private final String BROKER_PASSWORD = "admin";
-	private static final String JMS_LISTENER_CONTAINER = "jmsContainer";
-	private static String DESTINATION_QUEUE_NAME = "mx.ames.queue";
+	private static final String JMS_LISTENER_CONTAINER = "jmsLoaderContainer";
+	private static String DESTINATION_QUEUE_NAME = "mx.loader.queue";
 	
 	@Bean
-	public QueueConnectionFactory connectionFactory(){
+	public QueueConnectionFactory loaderConnectionFactory(){
 	    ActiveMQConnectionFactory connectionFactory = new ActiveMQConnectionFactory();
 	    connectionFactory.setBrokerURL(BROKER_URL);
 	    connectionFactory.setPassword(BROKER_USERNAME);
@@ -32,17 +32,17 @@ public class JmsConfiguration {
 	}
 	
 	@Bean
-	public JmsTemplate jmsTemplate(){
+	public JmsTemplate jmsLoaderTemplate(){
 	    JmsTemplate template = new JmsTemplate();
-	    template.setConnectionFactory(connectionFactory());
+	    template.setConnectionFactory(loaderConnectionFactory());
 	    template.setSessionAcknowledgeMode(INDIVIDUAL_ACNOWLEDGE);
 	    return template;
 	}
 
 	@Bean
-	public DefaultJmsListenerContainerFactory jmsListenerContainerFactory() {
+	public DefaultJmsListenerContainerFactory jmsLoaderListenerContainerFactory() {
 	    DefaultJmsListenerContainerFactory factory = new DefaultJmsListenerContainerFactory();
-	    factory.setConnectionFactory(connectionFactory());
+	    factory.setConnectionFactory(loaderConnectionFactory());
 	    factory.setConcurrency("2-2");
 	    factory.setSessionAcknowledgeMode(INDIVIDUAL_ACNOWLEDGE);
 	   
@@ -50,19 +50,19 @@ public class JmsConfiguration {
 	}
 	
 	@Bean(name = JMS_LISTENER_CONTAINER)
-	public DefaultMessageListenerContainer defaultMessageListenerContainer() {
+	public DefaultMessageListenerContainer defaultLoaderMessageListenerContainer() {
 		DefaultMessageListenerContainer container = new DefaultMessageListenerContainer();
-		container.setConnectionFactory(connectionFactory());
+		container.setConnectionFactory(loaderConnectionFactory());
 		container.setBeanName(JMS_LISTENER_CONTAINER);
 		container.setSessionAcknowledgeMode(INDIVIDUAL_ACNOWLEDGE);
 		container.setDestinationName(DESTINATION_QUEUE_NAME);
-		container.setMessageListener(messageListener());
+		container.setMessageListener(messageLoaderListener());
 		return container;
 	}
 	
 	@Bean
-	public MessageListener messageListener() {
-		return new ServiceJmsListener();
+	public MessageListener messageLoaderListener() {
+		return new ServiceJmsLoaderListener();
 	}
 	
 }
